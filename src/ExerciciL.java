@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ExerciciL {
 
@@ -90,20 +91,32 @@ public class ExerciciL {
         // 9 - Llistat dels dos HOMES més joves (stream)
 
         System.out.println("\n9\n");
-        llista_persones.stream().filter(persona -> persona.getGenere()==(Persona.Genere.HOME)).sorted(Comparator.comparingInt(Persona::getAge)).limit(2).forEach(System.out::println);
+        llista_persones.stream()
+                .filter(persona -> persona.getGenere()==(Persona.Genere.HOME)).sorted(Comparator.comparingInt(Persona::getAge)).limit(2).forEach(System.out::println);
 
         // 10- Esborrar (no filtrar o imprimir) del llistat les persones entre 30 i 40 anys (amb lambda)
+
+        llista_persones.removeIf(persona ->  persona.getAge()<=40 & persona.getAge()>=30);
 
         // 11 - Persones que tinguin una 'a' al seu nom
         System.out.println("\n11 Amb una 'A'");
 
+        llista_persones.stream().filter(persona -> persona.getNom().contains("a")).forEach(System.out::println);
+
         //12 - Llistat de les dates de naixament + dos dies
         System.out.println("\n12 - dates amb dos dies més");
 
+        llista_persones.forEach(persona -> System.out.println(persona.getDataNaixament().plusDays(2)));
 
         //13 - Rejovenir dos anys a totes les persones
         System.out.println("\n13 - Rejovenir dos anys a totes les persones");
 
+
+        llista_persones.stream()
+                .map(persona -> {
+                    persona.setDataNaixament(persona.getDataNaixament().withYear(persona.getDataNaixament().getYear()-2));return persona;
+                })
+                .forEach(System.out::println);
 
     }
 
